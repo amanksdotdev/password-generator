@@ -1,5 +1,3 @@
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState, useRef } from "react";
 import Container from "./components/Container";
 import "./App.css";
@@ -7,6 +5,7 @@ import SectionBox from "./components/SectionBox";
 import ReactSelect from "react-select";
 import ReactSwitch from "react-switch";
 import { ItemMap } from "./constants";
+import Toast from "./components/Toast";
 
 const reactSelectStyle = { option: (base) => ({ ...base, color: "black" }) };
 const selectOptions = Array.from({ length: 11 }, (_, i) => i + 16).map(
@@ -24,7 +23,9 @@ function App() {
   });
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [showTaost, setShowToast] = useState(false);
   const ref = useRef(null);
+  const timeout = useRef(null);
 
   useEffect(() => {
     if (
@@ -113,7 +114,15 @@ function App() {
   };
   const copyPassword = () => {
     navigator.clipboard.writeText(password);
-    toast.success("hello");
+    if (showTaost) return;
+    setShowToast(true);
+    console.log("triggered");
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+    timeout.current = setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
 
   return (
@@ -227,7 +236,7 @@ function App() {
                   password ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
                 onClick={copyPassword}
-                disabled={!!password}
+                disabled={!password}
               >
                 Copy
               </button>
@@ -235,17 +244,7 @@ function App() {
           </SectionBox>
         </main>
       </Container>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <Toast message="Copied to clipboard" visible={showTaost} />
     </div>
   );
 }

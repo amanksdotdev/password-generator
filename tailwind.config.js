@@ -4,5 +4,6 @@ module.exports = {
   theme: {
     extend: {},
   },
+  // purge: ["node_modules/react-toastify/dist/ReactToastify.css"],
   plugins: [],
 };
