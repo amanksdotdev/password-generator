@@ -3,7 +3,7 @@
   <h1>Password Generator</h1>
   
   <p>
-    Generae strong password for yourself
+    Generate strong password for yourself
   </p>
 </div>
 <!-- About the Project -->
